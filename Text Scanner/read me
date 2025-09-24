@@ -1,0 +1,2 @@
+This program uses two files to scan a text document. The program will go through the document and use a hashtable to record every occurance of each word in the document. It can then tell the user how many times a 
+specific word appears in the text.
