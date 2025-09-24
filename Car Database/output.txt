@@ -1,0 +1,2 @@
+Transaction 1: 2012 Tesla sold at $61391.00
+Transaction 2: 2003 Ford truck bought at $3009.00
