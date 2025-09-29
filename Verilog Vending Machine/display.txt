@@ -1,0 +1,30 @@
+module display(
+    input clr,
+    input clk,
+    output wire [3:0]an,
+    output wire [6:0]ca,
+    input [3:0]dig1,
+    input [3:0]dig2,
+    input [3:0]dig3,
+    input [3:0]dig4
+    );
+    
+    wire [1:0]s;
+    reg [3:0]x;
+    
+    Hex_To_Segment hex(.x(x), .ca(ca));
+    clock_enable clke(.clk(clk),.clr(clr), .en(en));
+    anode_driver anode(.clk(en), .clr(clr), .an(an), .s(s));
+    
+    always @(s) begin
+    case(s)
+        2'b00: x = dig1;
+        2'b01: x = dig2;
+        2'b10: x = dig3;
+        2'b11: x = dig4;
+        
+        endcase
+     end
+        
+    
+endmodule

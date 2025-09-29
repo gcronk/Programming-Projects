@@ -1,0 +1,53 @@
+module vending_controller (
+    input clk,
+    input clr,
+    input nickel, dime, quarter,
+    input [3:0] product_select,
+    output reg [6:0] balance_display,
+    output reg [6:0] cost_display,
+    output reg [3:0] product_dispensed
+);
+
+    parameter IDLE = 0, S5 = 5, S10 = 10, S15 = 15, S20 = 20, S25 = 25, S30 = 30, S35 = 35;
+
+    reg [5:0] state, next_state;
+    reg [5:0] product_cost;
+
+    always @(posedge clk or posedge clr) begin
+        if (clr)
+            state <= IDLE;
+        else
+            state <= next_state;
+    end
+
+    always @(nickel or dime or quarter) begin
+         next_state = state;
+
+        if (nickel) next_state = (state < 35) ? state + 5 : 35;
+        else if (dime) next_state = (state <= 30) ? state + 10 : 35;
+        else if (quarter) next_state = (state <= 10) ? state + 25 : 35;
+        //else if (product_cost <= state) #1000000 next_state = 0; 
+    end
+   
+
+    always @(*) begin
+        case (product_select)
+            4'b0001: product_cost = 15;
+            4'b0010: product_cost = 20;
+            4'b0100: product_cost = 25;
+            4'b1000: product_cost = 30;
+            default: product_cost = 0;
+        endcase
+
+        if (product_cost > 0 && state >= product_cost) begin
+            product_dispensed = product_select;
+            balance_display = (state - product_cost);
+            
+        end else begin
+            product_dispensed = 4'b0000;
+            balance_display = state;
+        end
+
+        cost_display = product_cost;
+    end
+endmodule

@@ -1,0 +1,19 @@
+module clock_enable(
+    input clk,
+    input clr,
+    output reg en
+    );
+    
+    reg [16:0] count;
+    always @ (posedge clk or posedge clr) begin
+        if (clr==1)
+            count <= 0;
+        else if (count == 99999) begin
+            count <= 0;
+            en <= 1;
+         end else begin
+            count <= count + 1;
+            en <= 0;
+          end
+       end
+endmodule

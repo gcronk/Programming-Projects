@@ -1,0 +1,19 @@
+module vending_display(
+    input clk, clr, nickel, dime, quarter,
+    //input [3:0] a,b,
+    input [3:0]product_select,
+    output [3:0] product_dispensed,
+    output [3:0]an,
+    output [6:0]ag
+    );
+    wire [6:0] balance, cost;
+    wire clock;
+   // wire [7:0]P;
+    
+    display dis(.clk(clk),.clr(clr),.dig1(balance[3:0]),.dig2(balance[6:4]),.dig3(cost[3:0]),.dig4(cost[6:4]),.an(an),.ca(ag));
+    one_hz_clk clock1(.clk(clk), .clr(clr),.en(clock));
+    vending_controller vend (.clk(clock), .clr(clr),.nickel(nickel),.dime(dime),.quarter(quarter),
+    .product_select(product_select),.cost_display(cost),.balance_display(balance),.product_dispensed(product_dispensed));
+    
+    
+endmodule

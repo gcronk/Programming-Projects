@@ -1,0 +1,22 @@
+module one_hz_clk(
+    input clk,        // 100 MHz input
+    input clr,        
+    output reg en     // 1 Hz output
+);
+
+    reg [26:0] count; 
+
+    always @ (posedge clk or posedge clr) begin
+        if (clr == 1) begin
+            count <= 0;
+            en <= 0;
+        end else if (count == 99_999_999) begin // 100M - 1
+            count <= 0;
+            en <= 1; 
+        end else begin
+            count <= count + 1;
+            en <= 0;
+        end
+    end
+
+endmodule
